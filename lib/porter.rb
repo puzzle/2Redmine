@@ -6,7 +6,11 @@ require 'xmlsimple'
 
 class Porter
   def import(file)
-    return XmlSimple.xml_in(file) if File.exist?(file)
+    begin
+      return XmlSimple.xml_in(file) if File.exist?(file)
+    rescue => e
+      abort e.to_s
+    end
     abort 'File does not exist'
   end
 
