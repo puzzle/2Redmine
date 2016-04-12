@@ -11,7 +11,10 @@ class Porter
   end
 
   def export(issue, url, api_key)
-      RestClient.post("https://#{url}/issues.json", issue.to_json, content_type: :json, params: {key: api_key})
+      url = url.match(/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/)
+      redmine_url = "https://#{url}/issues.json"
+
+      RestClient.post(redmine_url, issue.to_json, content_type: :json, params: {key: api_key})
       puts "Imported issue: #{issue.subject}"
     rescue Exception
       abort 'Connection failed, check your url and apikey'

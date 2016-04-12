@@ -6,9 +6,9 @@
 include OptionHandler
 
 def to_redmine
-  options = OptionHandler.parse
   p = Porter.new
-
+  
+  options = OptionHandler.parse
   issues_hash = p.import(options[:file])
   issues = Mapper.map_issues(options[:source_tool], issues_hash, options[:project_id])
 
