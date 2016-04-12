@@ -4,18 +4,16 @@
 #  https://github.com/puzzle/2Redmine.
 require 'xmlsimple'
 
-module Porter
-  def self.import(file)
+class Porter
+  def import(file)
     return XmlSimple.xml_in(file) if File.exist?(file)
     abort 'File does not exist'
   end
 
-  def self.export(issue, url, api_key)
-    Redmine::Issue.site = url
-    Redmine::Issue.headers["X-Redmine-API-Key"] = api_key
-
-      issue.save
+  def export(issue, url, api_key)
+      RestClient.post("https://#{url}/issues.json", issue.to_json, content_type: :json, params: {key: api_key})
+      puts "Imported issue: #{issue.subject}"
     rescue Exception
-      abort "Connection failed, check your url and apikey"
+      abort 'Connection failed, check your url and apikey'
   end
 end

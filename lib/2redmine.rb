@@ -3,17 +3,17 @@
 #  See the COPYING file at the top-level directory or at
 #  https://github.com/puzzle/2Redmine.
 
-require 'active_resource'
-require './modules/porter.rb'
-require './modules/redmine.rb'
-require './modules/option_handler.rb'
-
-include Porter
-include Redmine
 include OptionHandler
 
 def to_redmine
   options = OptionHandler.parse
-  Porter.import(options[:file])
-end
+  p = Porter.new
 
+  issues_hash = p.import(options[:file])
+  issues = Mapper.map_issues(options[:source_tool], issues_hash, options[:project_id])
+
+  issues.each do |i|
+    p.export(i, options[:url], options[:apikey])
+  end
+  puts 'Issue importing succeeded!'
+end

@@ -25,8 +25,8 @@ module OptionHandler
         options[:file] = file
       end
 
-      opt.on("-r","--redmine_projectid Projectid", "which project you want paste in (required)") do |projectid|
-        options[:projectid] = projectid
+      opt.on("-r","--redmine_projectid Projectid", "which project you want paste in (required)") do |project_id|
+        options[:project_id] = project_id
       end
 
       opt.on("-a","--apikey Apikey", "which apikey you want to use (required)") do |apikey|
@@ -37,8 +37,8 @@ module OptionHandler
         options[:url] = url
       end
 
-      opt.on("-e","--source_tool Source_Tool", "which source tool you want to use (required) | Options: bugzilla") do |exporttool|
-        options[:exporttool] = exporttool
+      opt.on("-e","--source_tool Source_Tool", "which source tool you want to use (required) | Options: bugzilla") do |source_tool|
+        options[:source_tool] = source_tool
       end
 
       opt.on("-h","--help","help") do
@@ -53,7 +53,6 @@ module OptionHandler
       puts opt_parser
       exit
     end
-
 
     unless options.count == 5
       puts "argument(s) is missing"

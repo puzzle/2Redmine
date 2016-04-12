@@ -5,6 +5,17 @@
 #  See the COPYING file at the top-level directory or at
 #  https://github.com/puzzle/2Redmine.
 
-require_relative 'modules/2redmine'
+
+require 'date'
+require 'json'
+require 'restclient'
+require './lib/issue.rb'
+require './lib/porter.rb'
+require './lib/mapper.rb'
+require './lib/option_handler.rb'
+require './lib/mappers/bugzilla_mapper.rb'
+
+
+require_relative 'lib/2redmine'
 
 to_redmine
