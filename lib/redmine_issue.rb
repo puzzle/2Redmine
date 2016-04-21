@@ -3,7 +3,7 @@
 #  See the COPYING file at the top-level directory or at
 #  https://github.com/puzzle/2Redmine.
 
-class Issue
+class RedmineIssue
   attr_accessor :project_id, :tracker_id, :status_id, :status_name, :prioriry_id, :prioriry_name, :subject, :description, :start_date, :is_private, :estimated_hours, :created_on, :updated_on, :story_points
 
   def initialize(params = {})
@@ -14,7 +14,7 @@ class Issue
 
   def to_json
     {
-      issue:{
+      redmine_issue:{
         project_id: self.project_id,
         tracker_id: self.tracker_id,
         status_id: self.status_id,

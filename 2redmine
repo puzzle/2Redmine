@@ -9,13 +9,13 @@
 require 'date'
 require 'json'
 require 'restclient'
-require './lib/issue.rb'
-require './lib/porter.rb'
-require './lib/mapper.rb'
+require './lib/redmine_issue.rb'
+require './lib/exporter.rb'
 require './lib/option_handler.rb'
-require './lib/mappers/bugzilla_mapper.rb'
+require './lib/importers/importer.rb'
+require './lib/importers/bugzilla_importer.rb'
 
 
-require_relative 'lib/2redmine'
+require_relative 'lib/to_redmine'
 
-to_redmine
+ToRedmine.execute

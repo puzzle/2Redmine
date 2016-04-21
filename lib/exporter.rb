@@ -4,20 +4,11 @@
 #  https://github.com/puzzle/2Redmine.
 require 'xmlsimple'
 
-class Porter
-  def import(file)
-    begin
-      return XmlSimple.xml_in(file) if File.exist?(file)
-    rescue => e
-      abort e.to_s
-    end
-    abort 'File does not exist'
-  end
+class Exporter
 
   def export(issue, url, api_key)
       url = url.match(/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/)
       redmine_url = "https://#{url}/issues.json"
-
       RestClient.post(redmine_url, issue.to_json, content_type: :json, params: {key: api_key})
       puts "Imported issue: #{issue.subject}"
     rescue Exception
