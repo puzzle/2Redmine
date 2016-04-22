@@ -4,7 +4,9 @@
 #  https://github.com/puzzle/2Redmine.
 
 class RedmineIssue
-  attr_accessor :project_id, :tracker_id, :status_id, :status_name, :prioriry_id, :prioriry_name, :subject, :description, :start_date, :is_private, :estimated_hours, :created_on, :updated_on, :story_points
+  ATTRS = [:project_id, :tracker_id, :status_id, :status_name, :prioriry_id, :prioriry_name, :subject, :description, :start_date, :is_private, :estimated_hours, :created_on, :updated_on, :story_points ]
+
+  attr_accessor *ATTRS
 
   def initialize(params = {})
     params.each do |key, value|
@@ -13,23 +15,15 @@ class RedmineIssue
   end
 
   def to_json
-    {
-      redmine_issue:{
-        project_id: self.project_id,
-        tracker_id: self.tracker_id,
-        status_id: self.status_id,
-        status_name: self.status_name,
-        prioriry_id: self.project_id,
-        prioriry_name: self.prioriry_name,
-        subject: self.subject,
-        description: self.description,
-        start_date: self.start_date,
-        is_private: self.is_private,
-        estimated_hours: self.estimated_hours,
-        created_on: self.created_on,
-        updated_on: self.updated_on,
-        story_points: self.story_points
-      }
-    }.to_json
+    { redmine_issue: key_value_hash }.to_json
   end
+
+  def key_value_hash
+    kv = {}
+    ATTRS.each do |a|
+      kv[a] = send(a)
+    end
+    kv
+  end
+
 end

@@ -5,8 +5,9 @@
 
 class BugzillaImporter < Importer
 
+  # TODO fix method permissions: private, public, protected
 
-  def import
+  def import_source_entries
     begin
       xmlfile = XmlSimple.xml_in(@params[:file]) if File.exist?(@params[:file])
       return xmlfile['bug']

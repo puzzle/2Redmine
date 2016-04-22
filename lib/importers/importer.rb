@@ -4,54 +4,56 @@
 #  https://github.com/puzzle/2Redmine.
 class Importer
 
+  # TODO fix method permissions: private, public, protected
+
+  DEFAULT_VALUES = {
+    status_id: 1,
+    status_name: 'New',
+    prioriry_id: 4,
+    prioriry_name: 'Normal',
+    is_private: false
+  }
+
   def initialize(options)
     @params = options
+    @importer = find_importer
+  end
+
+  def import_source_entries
+    raise 'implement me in sub class'
   end
 
   def redmine_issues
-    importer = find_importer
-    issue = importer.import
-    issue.collect do |i|
-      attributes = to_redmine_map(i, importer)
-      to_redmine_issue(attributes)
+    source_entries = import_source_entries
+    source_entries.collect do |e|
+      to_redmine_issue(e)
     end
   end
 
-  def to_redmine_map (issue, importer)
-    redmine_map =  {
-          project_id: @params[:project_id],
-          tracker_id: importer.method(:tracker_id).call(issue),
-          subject: importer.method(:subject).call(issue),
-          description: importer.method(:description).call(issue),
-          start_date: to_date(importer.method(:start_date).call(issue)),
-          estimated_hours: importer.method(:estimated_hours).call(issue),
-          created_on: to_date(importer.method(:created_on).call(issue)),
-          updated_on: to_date(importer.method(:updated_on).call(issue)),
-          story_points: importer.method(:story_points).call(issue),
-          status_id: 1,
-          status_name: 'New',
-          prioriry_id: 4,
-          prioriry_name: 'Normal',
-          is_private: false,
-        }
-  end
-
-  def find_importer
-    case @params[:source_tool]
-      when 'bugzilla'
-        BugzillaImporter.new(@params)
-      when 'otrs'
-        raise 'Source tool OTRS is in progress'
-      else
-          raise 'Source tool unknown'
+  def to_redmine_issue(entry)
+    params = {}
+    RedmineIssue.ATTRS.each do |a|
+      params[a] = param_value(a)
     end
+    RedmineIssue.new(params)
   end
 
-  def to_redmine_issue(attributes)
-    RedmineIssue.new(attributes)
+  def param_value(attr)
+    respond_to?(attr) ? send(attr) : DEFAULT_VALUES[attr]
   end
 
-  def to_date(date_str)
+  def format_date(date_str)
     Date.parse(date_str).to_s
+  end
+
+  def self.find_importer
+    case @params[:source_tool]
+    when 'bugzilla'
+      BugzillaImporter.new(@params)
+    when 'otrs'
+      raise 'Source tool OTRS is in progress'
+    else
+      raise 'Source tool unknown'
+    end
   end
 end
