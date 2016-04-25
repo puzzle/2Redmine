@@ -5,7 +5,9 @@
 
 class BugzillaImporter < Importer
 
-  # TODO fix method permissions: private, public, protected
+  def initialize(params)
+    @params = params
+  end
 
   def import_source_entries
     begin
@@ -15,6 +17,10 @@ class BugzillaImporter < Importer
       abort e.to_s
     end
     abort 'File does not exist'
+  end
+
+  def project_id(issue)
+    @params[:project_id]
   end
 
   def start_date(issue)

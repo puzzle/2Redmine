@@ -4,8 +4,6 @@
 #  https://github.com/puzzle/2Redmine.
 class Importer
 
-  # TODO fix method permissions: private, public, protected
-
   DEFAULT_VALUES = {
     status_id: 1,
     status_name: 'New',
@@ -14,46 +12,40 @@ class Importer
     is_private: false
   }
 
-  def initialize(options)
-    @params = options
-    @importer = find_importer
-  end
-
-  def import_source_entries
-    raise 'implement me in sub class'
-  end
-
-  def redmine_issues
-    source_entries = import_source_entries
-    source_entries.collect do |e|
+  def self.redmine_issues(options)
+    @importer = return_importer(options)
+    @source_entries = @importer.import_source_entries
+    @source_entries.collect do |e|
       to_redmine_issue(e)
+    end
+  end
+
+  private
+
+  def self.param_value(attr, entry)
+    @importer.respond_to?(attr) ? @importer.send(attr, entry) : DEFAULT_VALUES[attr]
+  end
+
+  def self.return_importer(options)
+    case options[:source_tool]
+      when 'bugzilla'
+        BugzillaImporter.new(options)
+      when 'otrs'
+        raise 'Source tool OTRS is in progress'
+      else
+        raise 'Source tool unknown'
+      end
     end
   end
 
   def to_redmine_issue(entry)
     params = {}
-    RedmineIssue.ATTRS.each do |a|
-      params[a] = param_value(a)
+    RedmineIssue::ATTRS.each do |a|
+      params[a] = param_value(a, entry)
     end
     RedmineIssue.new(params)
-  end
-
-  def param_value(attr)
-    respond_to?(attr) ? send(attr) : DEFAULT_VALUES[attr]
   end
 
   def format_date(date_str)
     Date.parse(date_str).to_s
   end
-
-  def self.find_importer
-    case @params[:source_tool]
-    when 'bugzilla'
-      BugzillaImporter.new(@params)
-    when 'otrs'
-      raise 'Source tool OTRS is in progress'
-    else
-      raise 'Source tool unknown'
-    end
-  end
-end
