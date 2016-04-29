@@ -9,13 +9,20 @@
 require 'date'
 require 'json'
 require 'restclient'
+require 'active_support/inflector'
 require './lib/redmine_issue.rb'
 require './lib/exporter.rb'
 require './lib/option_handler.rb'
 require './lib/importers/importer.rb'
 require './lib/importers/bugzilla_importer.rb'
+include OptionHandler
 
+  def self.execute
+    options = OptionHandler.parse
+    redmine_issues = Importer.redmine_issues(options)
+    e = Exporter.new(redmine_issues, options[:url], options[:apikey])
+    e.export
+    puts "#{redmine_issues.count} issues exported to redmine successfully!"
+  end
 
-require_relative 'lib/to_redmine'
-
-ToRedmine.execute
+execute

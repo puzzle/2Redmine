@@ -11,7 +11,7 @@ class BugzillaImporter < Importer
 
   def import_source_entries
     begin
-      xmlfile = XmlSimple.xml_in(@params[:file]) if File.exist?(@params[:file])
+      xmlfile = XmlSimple.xml_in(@params[:source]) if File.exist?(@params[:source])
       return xmlfile['bug']
     rescue => e
       abort e.to_s
@@ -19,12 +19,16 @@ class BugzillaImporter < Importer
     abort 'File does not exist'
   end
 
+  def format_date(date_str)
+    Date.parse(date_str).to_s
+  end
+
   def project_id(issue)
     @params[:project_id]
   end
 
   def start_date(issue)
-    issue['creation_ts'][0]
+    format_date(issue['creation_ts'][0])
   end
 
   def estimated_hours(issue)
@@ -32,11 +36,11 @@ class BugzillaImporter < Importer
   end
 
   def created_on(issue)
-    issue['creation_ts'][0]
+    format_date(issue['creation_ts'][0])
   end
 
   def updated_on(issue)
-    issue['delta_ts'][0]
+    format_date(issue['delta_ts'][0])
   end
 
   def story_points(issue)

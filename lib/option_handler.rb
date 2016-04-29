@@ -21,8 +21,8 @@ module OptionHandler
       opt.separator  ""
       opt.separator  "Options"
 
-      opt.on("-f","--file File","which file you want paste in to redmine (required)") do |file|
-        options[:file] = file
+      opt.on("-f","--source source","which source you want paste in to redmine (required)") do |source|
+        options[:source] = source
       end
 
       opt.on("-r","--redmine_projectid Projectid", "which project you want paste in (required)") do |project_id|

@@ -6,11 +6,18 @@ require 'xmlsimple'
 
 class Exporter
 
-  def export(issue, url, api_key)
-      url = url.match(/([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/)
-      redmine_url = "https://#{url}/issues.json"
-      RestClient.post(redmine_url, issue.to_json, content_type: :json, params: {key: api_key})
-      puts "Imported issue: #{issue.subject}"
+  def initialize (issue, url, api_key)
+    @issue = issue
+    @url = URI("#{url}/issues.json")
+    @api_key = api_key
+  end
+
+  def export
+    redmine_url = "https://#{@url.host}#{@url.path}"
+      @issue.each do |i|
+        RestClient.post(redmine_url, i.to_json, content_type: :json, params: {key: @api_key})
+        puts "exported issue: #{i.subject}"
+      end
     rescue Exception
       abort 'Connection failed, check your url and apikey'
   end

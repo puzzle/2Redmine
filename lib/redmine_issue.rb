@@ -15,7 +15,7 @@ class RedmineIssue
   end
 
   def to_json
-    { redmine_issue: key_value_hash }.to_json
+    { issue: key_value_hash }.to_json
   end
 
   def key_value_hash

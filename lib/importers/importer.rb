@@ -12,30 +12,24 @@ class Importer
     is_private: false
   }
 
-  def self.redmine_issues(options)
-    @importer = return_importer(options)
+class << self
+  def redmine_issues(options)
+    @importer = initialize_importer(options)
     @source_entries = @importer.import_source_entries
     @source_entries.collect do |e|
       to_redmine_issue(e)
     end
   end
 
-  private
-
-  def self.param_value(attr, entry)
-    @importer.respond_to?(attr) ? @importer.send(attr, entry) : DEFAULT_VALUES[attr]
+  def initialize_importer(options)
+    importer_name = options[:source_tool].capitalize + 'Importer'
+    ActiveSupport::Inflector.constantize(importer_name).new(options)
+  rescue Exception
+    abort 'Source tool unknown'
   end
 
-  def self.return_importer(options)
-    case options[:source_tool]
-      when 'bugzilla'
-        BugzillaImporter.new(options)
-      when 'otrs'
-        raise 'Source tool OTRS is in progress'
-      else
-        raise 'Source tool unknown'
-      end
-    end
+  def param_value(attr, entry)
+    @importer.respond_to?(attr) ? @importer.send(attr, entry) : DEFAULT_VALUES[attr]
   end
 
   def to_redmine_issue(entry)
@@ -46,6 +40,9 @@ class Importer
     RedmineIssue.new(params)
   end
 
-  def format_date(date_str)
-    Date.parse(date_str).to_s
+  def import_source_entries
+    raise 'implement me in subclass'
   end
+
+end
+end
