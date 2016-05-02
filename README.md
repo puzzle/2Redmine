@@ -19,7 +19,7 @@ change into the new directory
 Example:
 
 ```
-ruby 2redmine --file ../../example_file --redmine_projectid 12121212 --apikey 3ithrfj4uihguh --url https://bugzilla.example.ch --source_tool bugzilla
+ ./2redmine --source ../../example_file --redmine_projectid 12121212 --apikey 3ithrfj4uihguh --url https://bugzilla.example.ch --source_tool bugzilla
 ```
 
 | Params | Description           |
