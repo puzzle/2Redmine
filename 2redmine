@@ -18,6 +18,7 @@ require './lib/importers/bugzilla_importer.rb'
 include OptionHandler
 
   def self.execute
+    raise 'Ruby Version has to be equal or greater than 1.9.3' if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('1.9.3')
     options = OptionHandler.parse
     redmine_issues = Importer.redmine_issues(options)
     e = Exporter.new(redmine_issues, options[:url], options[:apikey])
