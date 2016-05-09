@@ -22,7 +22,7 @@ PLATFORMS
 
 DEPENDENCIES
   require_all
-  rest-client (~> 1.8)
+  rest-client
   xml-simple
 
 BUNDLED WITH

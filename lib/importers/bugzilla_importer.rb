@@ -10,13 +10,13 @@ class BugzillaImporter < Importer
   end
 
   def import_source_entries
+    abort 'File does not exist' unless File.exist?(@params[:source])
     begin
-      xmlfile = XmlSimple.xml_in(@params[:source]) if File.exist?(@params[:source])
+      xmlfile = XmlSimple.xml_in(@params[:source])
       return xmlfile['bug']
     rescue => e
       abort e.to_s
     end
-    abort 'File does not exist'
   end
 
   def format_date(date_str)
