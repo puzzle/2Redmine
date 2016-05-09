@@ -5,16 +5,15 @@
 #  See the COPYING file at the top-level directory or at
 #  https://github.com/puzzle/2Redmine.
 
-
 require 'date'
 require 'json'
-require 'restclient'
-require 'active_support/inflector'
+require 'rest-client'
 require './lib/redmine_issue.rb'
 require './lib/exporter.rb'
 require './lib/option_handler.rb'
 require './lib/importers/importer.rb'
 require './lib/importers/bugzilla_importer.rb'
+require 'active_support/inflector'
 include OptionHandler
 
   def self.execute

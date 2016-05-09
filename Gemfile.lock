@@ -24,6 +24,3 @@ DEPENDENCIES
   require_all
   rest-client
   xml-simple
-
-BUNDLED WITH
-   1.11.2
