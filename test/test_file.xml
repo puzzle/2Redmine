@@ -31,6 +31,7 @@
       <who>Max Mustermann</who>
       <bug_when>2014-01-01 16:48:53 +0200</bug_when>
       <thetext>
+        <test>
         Test Issue for Script
       </thetext>
     </long_desc>

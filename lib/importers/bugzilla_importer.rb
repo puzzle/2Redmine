@@ -12,7 +12,8 @@ class BugzillaImporter < Importer
   def import_source_entries
     abort 'File does not exist' unless File.exist?(@params[:source])
     begin
-      xmlfile = XmlSimple.xml_in(@params[:source])
+      file = Importer.escape_tags('thetext', @params[:source])
+      xmlfile = XmlSimple.xml_in(file)
       return xmlfile['bug']
     rescue => e
       abort e.to_s

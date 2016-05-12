@@ -11,37 +11,49 @@ class Importer
     is_private: false
   }
 
-class << self
-  def redmine_issues(options)
-    @importer = initialize_importer(options)
-    @source_entries = @importer.import_source_entries
-    @source_entries.collect do |e|
-      to_redmine_issue(e)
+  class << self
+    def redmine_issues(options)
+      @importer = initialize_importer(options)
+      @source_entries = @importer.import_source_entries
+      @source_entries.collect do |e|
+        to_redmine_issue(e)
+      end
+    end
+
+    def initialize_importer(options)
+      importer_name = options[:source_tool].capitalize + 'Importer'
+      ActiveSupport::Inflector.constantize(importer_name).new(options)
+    rescue Exception
+      abort 'Source tool unknown'
+    end
+
+    def param_value(attr, entry)
+      if @importer.respond_to?(attr) && !@importer.send(attr, entry).nil?
+        @importer.send(attr, entry)
+      else
+        DEFAULT_VALUES[attr]
+      end
+    end
+
+    def to_redmine_issue(entry)
+      params = {}
+      RedmineIssue::ATTRS.each do |a|
+        params[a] = param_value(a, entry)
+      end
+      RedmineIssue.new(params)
+    end
+
+    def import_source_entries
+      raise 'implement me in subclass'
+    end
+
+    def escape_tags(tag, file)
+      regex = /<#{tag}>(.*)<\/#{tag}>/ms
+      file = File.read(file)
+      text = file.match(regex)[0]
+      replaced_text = text.gsub("<#{tag}>", '').gsub("</#{tag}>", '')
+      replaced_text = replaced_text.to_s.gsub('<', '&lt;').gsub('>', '&gt;')
+      file.gsub(regex, "<#{tag}>#{replaced_text}</#{tag}>")
     end
   end
-
-  def initialize_importer(options)
-    importer_name = options[:source_tool].capitalize + 'Importer'
-    ActiveSupport::Inflector.constantize(importer_name).new(options)
-  rescue Exception
-    abort 'Source tool unknown'
-  end
-
-  def param_value(attr, entry)
-    @importer.respond_to?(attr) ? @importer.send(attr, entry) : DEFAULT_VALUES[attr]
-  end
-
-  def to_redmine_issue(entry)
-    params = {}
-    RedmineIssue::ATTRS.each do |a|
-      params[a] = param_value(a, entry)
-    end
-    RedmineIssue.new(params)
-  end
-
-  def import_source_entries
-    raise 'implement me in subclass'
-  end
-
-end
 end
