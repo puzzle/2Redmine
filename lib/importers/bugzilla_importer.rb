@@ -54,14 +54,21 @@ class BugzillaImporter < Importer
   def description(issue)
     desc = "BugzillaBug for #{issue['product'][0]} (#{issue['component'][0]}) #{issue['version'][0]}: \n"
     desc += "Status: #{issue['bug_status'][0]} / Priority: #{issue['priority'][0]} / Severity: #{issue['bug_severity'][0]} \n"
+    issue['cf_customer'].nil? ? desc += "\n \n" : desc += "Reporting Customer: #{issue['cf_customer'][0]} \n \n"
+
 
     issue['long_desc'].each do |ld|
-      desc += "#{ld['bug_when'][0]}, #{ld['who'][0]['content']}:\n #{ld['thetext'][0]}"
+      desc += "*#{ld['bug_when'][0]}, #{ld['who'][0]['content']}:* \n"
+      desc += "<pre>#{ld['thetext'][0]}</pre>"
     end
     desc
   end
 
   def subject(issue)
-    "#{issue['bug_id'][0]} #{issue['short_desc'][0]}"
+    "##{issue['bug_id'][0]} - #{issue['short_desc'][0]}"
+  end
+
+  def status_id(issue)
+    @params[:status_id]
   end
 end

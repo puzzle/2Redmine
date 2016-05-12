@@ -41,6 +41,10 @@ module OptionHandler
         options[:source_tool] = source_tool
       end
 
+      opt.on("-s","--status_id Status_id", "which status id you want to use (Default = 1)") do |status_id|
+        options[:status_id] = status_id
+      end
+
       opt.on("-h","--help","help") do
         puts opt_parser
       end
@@ -54,7 +58,7 @@ module OptionHandler
       exit
     end
 
-    unless options.count == 5
+    unless options.count >= 5
       puts "argument(s) is missing"
       puts opt_parser
       exit

@@ -6,7 +6,6 @@ class Importer
 
   DEFAULT_VALUES = {
     status_id: 1,
-    status_name: 'New',
     prioriry_id: 4,
     prioriry_name: 'Normal',
     is_private: false
