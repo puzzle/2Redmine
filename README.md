@@ -28,7 +28,7 @@ Example:
 
 | Params | Description           |
 | ------------------------------- |:-------------:|
-| --file     | Path to the File you wish to import |
+| --source     | Path to the File you wish to import |
 | --redmine_projectid     | The redmine project id you wish your issues to import in      |
 | --apikey | The API key to access to your redmine (MyAccount -> on the right side)      |
 | --url | URL to the Redmine  |

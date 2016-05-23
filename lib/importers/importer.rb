@@ -48,10 +48,10 @@ class Importer
     end
 
     def escape_tags(tag, file)
-      regex = /<#{tag}>(.*)<\/#{tag}>/ms
+      pattern = '/<#{tag}>(.*)<\/#{tag}>/ms'.encode('UTF-8')
+      regex = pattern
       file = File.read(file)
-      text = file.match(regex)[0]
-      replaced_text = text.gsub("<#{tag}>", '').gsub("</#{tag}>", '')
+      text = file.scan(regex)[0]
       replaced_text = replaced_text.to_s.gsub('<', '&lt;').gsub('>', '&gt;')
       file.gsub(regex, "<#{tag}>#{replaced_text}</#{tag}>")
     end
