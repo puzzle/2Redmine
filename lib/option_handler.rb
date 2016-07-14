@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 #  Copyright (c) 2016, Puzzle ITC GmbH. This file is part of
 #  2Redmine and licensed under the Affero General Public License version 3 or later.
 #  See the COPYING file at the top-level directory or at
@@ -21,7 +23,7 @@ module OptionHandler
       opt.separator  ""
       opt.separator  "Options"
 
-      opt.on("-f","--source source","which source you want paste in to redmine (required)") do |source|
+      opt.on("-so","--source source","which source you want paste in to redmine (required)") do |source|
         options[:source] = source
       end
 
@@ -43,6 +45,10 @@ module OptionHandler
 
       opt.on("-s","--status_id Status_id", "which status id you want to use (Default = 1)") do |status_id|
         options[:status_id] = status_id
+      end
+
+      opt.on("-qu", "--query", "Query for Title") do |query|
+        options[:query] = query
       end
 
       opt.on("-q","--queue ", "which queue you want to look for") do |queue|

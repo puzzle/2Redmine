@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 #  Copyright (c) 2016, Puzzle ITC GmbH. This file is part of
 #  2Redmine and licensed under the Affero General Public License version 3 or later.
 #  See the COPYING file at the top-level directory or at
@@ -10,8 +12,7 @@ class OtrsImporter < Importer
   end
 
   def import_source_entries
-    queue_tickets
-    require "pry";binding.pry
+    @params[:query].nil? ? queue_tickets : queue_tickets_filter
   end
 
   def project_id(ticket)
@@ -22,24 +23,12 @@ class OtrsImporter < Importer
     format_date(ticket[:create_time].to_s)
   end
 
-  def estimated_hours(ticket)
-
-  end
-
   def created_on(ticket)
     format_date(ticket[:create_time].to_s)
   end
 
   def updated_on(ticket)
     format_date(ticket[:change_time].to_s)
-  end
-
-  def story_points(ticket)
-
-  end
-
-  def tracker_id(ticket)
-
   end
 
   def description(ticket)
@@ -68,19 +57,17 @@ class OtrsImporter < Importer
   end
 
   def fixed_version_id(ticket)
-    if article_check(ticket[:id]) == false
-      require "pry";binding.pry
-      #to-do: Id from target-version
-      'wirksamkeit prüfen'
-    elsif otrs_ticket_status(ticket[:ticket_state_id]) == 'check efficacy'
+    if otrs_ticket_status(ticket[:ticket_state_id]) == 'check efficacy'
+      #to-do: Id from target-version 'wirksamkeit prüfen'
+      843
+    elsif article_check(ticket[:id]) == false && otrs_ticket_status(ticket[:ticket_state_id]) == 'closed successful'
+      842
     end
   end
 
-
-
   def article_check(ticket_id)
     article = ticket_article(ticket_id)
-    article.find {|a| a[:a_subject] == "Wirksamkeit gepr\xC3\xBCft"}.nil?
+    article.find {|a| a[:a_subject] == "Wirksamkeit geprüft"}.nil?
   end
 
   def otrs_ticket_status(ticket_state_id)
@@ -92,7 +79,7 @@ class OtrsImporter < Importer
   end
 
   def db_connect
-    Sequel.mysql(:adapter => 'mysql', :user => db_credentials['Username'], :host => db_credentials['Host'], :database => db_credentials['Database'], :password=> db_credentials['Password'], :encoding => 'utf8')
+    Sequel.mysql(:adapter => 'mysql2', :user => db_credentials['Username'], :host => db_credentials['Host'], :database => db_credentials['Database'], :password=> db_credentials['Password'], :encoding => 'utf8')
   end
 
   def db_credentials
@@ -109,6 +96,10 @@ class OtrsImporter < Importer
 
   def queue_tickets
     db[:ticket].where(:queue_id => queue_id.first[:id].to_s)
+  end
+
+  def queue_tickets_filter
+    queue_tickets.where(Sequel.like(:title, /#{@params[:query]}.*/))
   end
 
   def ticket_article(ticket_id)

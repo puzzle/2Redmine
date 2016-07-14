@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'require_all'
 require 'minitest/autorun'
 require 'date'
@@ -19,7 +21,7 @@ class ExporterTest < Minitest::Test
     redmine_issues = Importer.redmine_issues(options)
 
     exporter = Exporter.new(redmine_issues, options[:url], options[:api_key])
-    
+
     exception = assert_raises(Exception) do
       exporter.export
     end

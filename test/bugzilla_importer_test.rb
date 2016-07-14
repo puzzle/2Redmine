@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'require_all'
 require 'minitest/autorun'
 require 'date'

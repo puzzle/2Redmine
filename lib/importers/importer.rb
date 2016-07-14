@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 #  Copyright (c) 2016, Puzzle ITC GmbH. This file is part of
 #  2Redmine and licensed under the Affero General Public License version 3 or later.
 #  See the COPYING file at the top-level directory or at
@@ -6,6 +8,7 @@ class Importer
 
   DEFAULT_VALUES = {
     status_id: 1,
+    tracker_id: 2,
     prioriry_id: 4,
     prioriry_name: 'Normal',
     is_private: false,
