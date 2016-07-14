@@ -8,7 +8,8 @@ class Importer
     status_id: 1,
     prioriry_id: 4,
     prioriry_name: 'Normal',
-    is_private: false
+    is_private: false,
+    fixed_version_id: 0
   }
 
   class << self

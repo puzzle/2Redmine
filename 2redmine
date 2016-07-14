@@ -13,7 +13,12 @@ require './lib/exporter.rb'
 require './lib/option_handler.rb'
 require './lib/importers/importer.rb'
 require './lib/importers/bugzilla_importer.rb'
+require './lib/importers/otrs_importer.rb'
 require 'active_support/inflector'
+require 'sequel'
+require 'mysql'
+require 'yaml'
+
 include OptionHandler
 
   def self.execute

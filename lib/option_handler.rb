@@ -45,6 +45,11 @@ module OptionHandler
         options[:status_id] = status_id
       end
 
+      opt.on("-q","--queue ", "which queue you want to look for") do |queue|
+        options[:queue] = queue
+      end
+
+
       opt.on("-h","--help","help") do
         puts opt_parser
       end
