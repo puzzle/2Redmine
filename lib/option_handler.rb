@@ -39,7 +39,7 @@ module OptionHandler
         options[:url] = url
       end
 
-      opt.on("-e","--source_tool Source_Tool", "which source tool you want to use (required) | Options: bugzilla, otrs") do |source_tool|
+      opt.on("-e","--source_tool Source_Tool", "which source tool you want to use (required) | Options: bugzilla, OTR") do |source_tool|
         options[:source_tool] = source_tool
       end
 
@@ -47,11 +47,15 @@ module OptionHandler
         options[:status_id] = status_id
       end
 
-      opt.on("-qu", "--query", "Query for Title") do |query|
+      #
+      # Parameters for OTRS
+      #
+
+      opt.on("-qu", "--otrs_query", "otrs ticket title filter") do |query|
         options[:query] = query
       end
 
-      opt.on("-q","--queue ", "which queue you want to look for") do |queue|
+      opt.on("-q","--otrs_queue ", "otrs queue name to import tickets from, e.g. --otrs-queue-name 'MyQueue'") do |queue|
         options[:queue] = queue
       end
 
@@ -69,7 +73,7 @@ module OptionHandler
       exit
     end
 
-    unless options.count >= 5
+    unless options.count >= 4
       puts "argument(s) is missing"
       puts opt_parser
       exit

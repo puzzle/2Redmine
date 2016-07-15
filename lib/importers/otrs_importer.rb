@@ -11,9 +11,18 @@ class OtrsImporter < Importer
     @params = params
   end
 
+  #
+  # Main method
+  #
+
   def import_source_entries
-    @params[:query].nil? ? queue_tickets : queue_tickets_filter
+    otrs_tickets = @params[:queue].nil? ? tickets : queue_tickets
+    @params[:query].nil? ? otrs_tickets : query_tickets_filter(otrs_tickets)
   end
+
+  #
+  # redmine_issues Attributes
+  #
 
   def project_id(ticket)
     @params[:project_id]
@@ -35,7 +44,7 @@ class OtrsImporter < Importer
     desc = "OTRS ticket \n"
     ticket[:customer_id].nil? ? desc += "\n \n" : desc += "Reporting Customer: #{ticket[:customer_id]} \n \n"
 
-    ticket_article(ticket[:id]).all.each do |ta|
+    ticket_article(ticket[:id]).each do |ta|
       desc += "*#{ta[:create_time]}, #{ta[:a_from]}:* \n"
       desc += "<pre>#{ta[:a_body]}</pre>"
     end
@@ -58,55 +67,69 @@ class OtrsImporter < Importer
 
   def fixed_version_id(ticket)
     if otrs_ticket_status(ticket[:ticket_state_id]) == 'check efficacy'
-      #to-do: Id from target-version 'wirksamkeit prüfen'
       843
     elsif article_check(ticket[:id]) == false && otrs_ticket_status(ticket[:ticket_state_id]) == 'closed successful'
       842
     end
   end
 
+  private
+  #
+  # Helpermethods
+  #
+
   def article_check(ticket_id)
     article = ticket_article(ticket_id)
     article.find {|a| a[:a_subject] == "Wirksamkeit geprüft"}.nil?
-  end
-
-  def otrs_ticket_status(ticket_state_id)
-    db["select name from ticket_state where id=" + ticket_state_id.to_s].first[:name]
   end
 
   def format_date(date_str)
     Date.parse(date_str).to_s
   end
 
+  def query_tickets_filter(otrs_tickets)
+    otrs_tickets.where(Sequel.like(:title, /#{@params[:query]}.*/))
+  end
+
+  #
+  # Database connection and credentials
+  #
+
   def db_connect
-    Sequel.mysql(:adapter => 'mysql2', :user => db_credentials['Username'], :host => db_credentials['Host'], :database => db_credentials['Database'], :password=> db_credentials['Password'], :encoding => 'utf8')
+    Sequel.mysql(adapter: 'mysql2', user: db_credentials['Username'], host: db_credentials['Host'], database: db_credentials['Database'], password: db_credentials['Password'], encoding: 'utf8')
   end
 
   def db_credentials
     credentials = YAML.load(File.read("db_credentials.yml"))
   end
 
-  def queue_id
-    db["select id from queue where name like '" + @params[:queue]+"'"]
+  #
+  # Database Requests
+  #
+
+  def otrs_ticket_status(ticket_state_id)
+    otrs_db["select name from ticket_state where id=" + ticket_state_id.to_s].first[:name]
   end
 
-  def ticket_status
-    db[:ticket_state].where()
+  def queue_id
+    otrs_db["select id from queue where name like '" + @params[:queue]+"'"]
+  end
+
+  def tickets
+    otrs_db[:ticket]
   end
 
   def queue_tickets
-    db[:ticket].where(:queue_id => queue_id.first[:id].to_s)
-  end
-
-  def queue_tickets_filter
-    queue_tickets.where(Sequel.like(:title, /#{@params[:query]}.*/))
+    tickets.where(queue_id: queue_id.first[:id].to_s)
+    rescue
+      puts 'Queue not found in database'
   end
 
   def ticket_article(ticket_id)
-    db[:article].where(:ticket_id => ticket_id)
+    otrs_db[:article].where(ticket_id: ticket_id)
   end
 
-  def db
+  def otrs_db
     @db ||= db_connect
   end
 end
