@@ -34,3 +34,14 @@ Example:
 | --url | URL to the Redmine  |
 | --source_tool | The source_tool where the file comes from      |
 | --status_id | The status_id you want to set to this file export (by default is set 1)|
+
+
+## Database credentials for OTRS
+
+In the root directory is a file called: db_credentials.yml
+Write your username, password,hostadress, and database name to this file.
+
+
+
+
+
