@@ -1,9 +1,8 @@
-# encoding: utf-8
-
 #  Copyright (c) 2016, Puzzle ITC GmbH. This file is part of
 #  2Redmine and licensed under the Affero General Public License version 3 or later.
 #  See the COPYING file at the top-level directory or at
 #  https://github.com/puzzle/2Redmine.
+
 class Importer
 
   DEFAULT_VALUES = {
@@ -52,10 +51,10 @@ class Importer
     end
 
     def escape_tags(tag, file)
-      pattern = '/<#{tag}>(.*)<\/#{tag}>/ms'.encode('UTF-8')
-      regex = pattern
+      regex = /<#{tag}>(.*)<\/#{tag}>/ms
       file = File.read(file)
-      text = file.scan(regex)[0]
+      text = file.match(regex)[0]
+      replaced_text = text.gsub("<#{tag}>", '').gsub("</#{tag}>", '')
       replaced_text = replaced_text.to_s.gsub('<', '&lt;').gsub('>', '&gt;')
       file.gsub(regex, "<#{tag}>#{replaced_text}</#{tag}>")
     end
