@@ -14,7 +14,6 @@ class OtrsImporter < Importer
   #
   # Main method
   #
-
   def import_source_entries
     otrs_tickets = @params[:queue].nil? ? tickets : queue_tickets
     @params[:query].nil? ? otrs_tickets : query_tickets_filter(otrs_tickets)
@@ -23,7 +22,6 @@ class OtrsImporter < Importer
   #
   # redmine_issues Attributes
   #
-
   def project_id(ticket)
     @params[:project_id]
   end
@@ -58,9 +56,9 @@ class OtrsImporter < Importer
   def status_id(ticket)
     status = otrs_ticket_status(ticket[:ticket_state_id])
     redmine_status_id = case status
-      when "new" then 1
-      when "check efficacy" then 7
-      else 3
+    when 'new' then 1
+    when 'check efficacy' then 7
+    else 3
     end
     redmine_status_id
   end
@@ -68,7 +66,7 @@ class OtrsImporter < Importer
   def fixed_version_id(ticket)
     if otrs_ticket_status(ticket[:ticket_state_id]) == 'check efficacy'
       843
-    elsif article_check(ticket[:id]) == false && otrs_ticket_status(ticket[:ticket_state_id]) == 'closed successful'
+    elsif !article_check(ticket[:id]) && otrs_ticket_status(ticket[:ticket_state_id]) == 'closed successful'
       842
     end
   end
@@ -77,10 +75,9 @@ class OtrsImporter < Importer
   #
   # Helpermethods
   #
-
   def article_check(ticket_id)
     article = ticket_article(ticket_id)
-    article.find {|a| a[:a_subject] == "Wirksamkeit geprüft"}.nil?
+    article.find {|a| a[:a_subject] == 'Wirksamkeit geprüft'}.nil?
   end
 
   def format_date(date_str)
@@ -94,25 +91,30 @@ class OtrsImporter < Importer
   #
   # Database connection and credentials
   #
-
   def db_connect
-    Sequel.mysql(adapter: 'mysql2', user: db_credentials['Username'], host: db_credentials['Host'], database: db_credentials['Database'], password: db_credentials['Password'], encoding: 'utf8')
+    con = Sequel.mysql(adapter: 'mysql2',
+                       user: db_credentials['Username'],
+                       host: db_credentials['Host'],
+                       database: db_credentials['Database'],
+                       password: db_credentials['Password'],
+                       encoding: 'utf8')
+    con.test_connection rescue abort "Can't connect to Database"
+    con
   end
 
   def db_credentials
-    credentials = YAML.load(File.read("db_credentials.yml"))
+    credentials = YAML.load(File.read('db_credentials.yml'))
   end
 
   #
   # Database Requests
   #
-
   def otrs_ticket_status(ticket_state_id)
-    otrs_db["select name from ticket_state where id=" + ticket_state_id.to_s].first[:name]
+    otrs_db["select name from ticket_state where id = #{ticket_state_id.to_s}"].first[:name]
   end
 
   def queue_id
-    otrs_db["select id from queue where name like '" + @params[:queue]+"'"]
+    otrs_db["select id from queue where name like '#{@params[:queue]}'"]
   end
 
   def tickets
@@ -128,10 +130,8 @@ class OtrsImporter < Importer
   def ticket_article(ticket_id)
     otrs_db[:article].where(ticket_id: ticket_id)
   end
+
   def otrs_db
-    require "pry";binding.pry
     @db ||= db_connect
-  rescue
-    abort 'DB credentials are wrong'
   end
 end

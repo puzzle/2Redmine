@@ -34,6 +34,4 @@ class ExporterTest < Minitest::Test
     assert_equal 'Connection failed, check your url and apikey', exception.message
 
   end
-
-
 end

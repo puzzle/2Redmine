@@ -5,15 +5,15 @@
 #  See the COPYING file at the top-level directory or at
 #  https://github.com/puzzle/2Redmine.
 
-require 'require_all'
-require 'minitest/autorun'
 require 'date'
 require 'json'
-require 'restclient'
-require_all 'lib'
-require 'active_support/inflector'
-require 'mocha/mini_test'
 require 'sequel'
+require_all 'lib'
+require 'restclient'
+require 'require_all'
+require 'mocha/mini_test'
+require 'minitest/autorun'
+require 'active_support/inflector'
 
 class OtrsImporterTest < Minitest::Test
   def test_otrs
