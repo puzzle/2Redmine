@@ -121,15 +121,17 @@ class OtrsImporter < Importer
 
   def queue_tickets
     tickets.where(queue_id: queue_id.first[:id].to_s)
-    rescue
-      puts 'Queue not found in database'
+  rescue
+    puts 'Queue not found in database'
   end
 
   def ticket_article(ticket_id)
     otrs_db[:article].where(ticket_id: ticket_id)
   end
-
   def otrs_db
+    require "pry";binding.pry
     @db ||= db_connect
+  rescue
+    abort 'DB credentials are wrong'
   end
 end
