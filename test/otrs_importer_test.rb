@@ -17,8 +17,42 @@ require 'active_support/inflector'
 
 class OtrsImporterTest < Minitest::Test
   def test_otrs
+    options = {
+      query: "test",
+      project_id: '666',
+      source_tool: 'otrs'
+    }
 
-    ticket =  {  id: 2462,
+    otrs_importer = OtrsImporter.new(options)
+    otrs_importer.expects(:tickets).returns(ticket)
+    otrs_importer.expects(:query_tickets_filter).returns(ticket)
+    otrs_importer.expects(:otrs_ticket_status).with(ticket.first[:ticket_state_id]).returns('new').times(3)
+    otrs_importer.expects(:ticket_articles).with(ticket.first[:id]).returns(article).times(3)
+    Importer.expects(:initialize_importer).with(options).returns(otrs_importer)
+
+    redmine_issue = Importer.redmine_issues(options)
+
+    redmine_issue = redmine_issue.first
+    assert_equal "666", redmine_issue.project_id
+    assert_equal 2, redmine_issue.tracker_id
+    assert_equal "test the test ticket for testing something for test reason", redmine_issue.subject
+    description = "OTRS ticket \nReporting Customer: test@test.ch \n \n*2012-01-06 10:30:02 +0100, Markus Tester <tester@test.ch>:* \n<pre>Dies ist der body eines article und zugleich auch ein Test</pre>"
+    assert_equal description, redmine_issue.description
+    assert_equal "2012-01-06", redmine_issue.start_date
+    assert_equal "2012-01-06", redmine_issue.created_on
+    assert_equal "2012-03-28", redmine_issue.updated_on
+    assert_equal nil, redmine_issue.story_points
+    assert_equal 1, redmine_issue.status_id
+    assert_equal 4, redmine_issue.prioriry_id
+    assert_equal false, redmine_issue.is_private
+  end
+
+
+
+  private
+
+  def ticket
+    ticket =  [{  id: 2462,
                  tn: "0313524598",
                  title: "test the test ticket for testing something for test reason",
                  queue_id: 40,
@@ -43,32 +77,14 @@ class OtrsImporterTest < Minitest::Test
                  create_by: 1,
                  change_time: "2012-03-28 15:50:47 +0200",
                  change_by: 37,
-                 archive_flag: 0}
+                 archive_flag: 0}]
+  end
 
+
+  def article
     article =   [{create_time: "2012-01-06 10:30:02 +0100",
                  a_from: "Markus Tester <tester@test.ch>",
                  a_body: "Dies ist der body eines article und zugleich auch ein Test"}]
-
-
-    @importer = OtrsImporter.new({query: "test", project_id: '666'})
-    @importer.expects(:otrs_ticket_status).with(ticket[:ticket_state_id]).returns('new').at_most(3)
-    @importer.expects(:ticket_article).with(ticket[:id]).returns(article).at_most(3)
-    Importer.instance_variable_set(:@importer, @importer)
-
-    redmine_issue = Importer.to_redmine_issue(ticket)
-
-    assert_equal "666", redmine_issue.project_id
-    assert_equal 2, redmine_issue.tracker_id
-    assert_equal "test the test ticket for testing something for test reason", redmine_issue.subject
-    description = "OTRS ticket \nReporting Customer: test@test.ch \n \n*2012-01-06 10:30:02 +0100, Markus Tester <tester@test.ch>:* \n<pre>Dies ist der body eines article und zugleich auch ein Test</pre>"
-    assert_equal description, redmine_issue.description
-    assert_equal "2012-01-06", redmine_issue.start_date
-    assert_equal "2012-01-06", redmine_issue.created_on
-    assert_equal "2012-03-28", redmine_issue.updated_on
-    assert_equal nil, redmine_issue.story_points
-    assert_equal 1, redmine_issue.status_id
-    assert_equal 4, redmine_issue.prioriry_id
-    assert_equal false, redmine_issue.is_private
   end
 
 

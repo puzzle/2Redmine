@@ -42,7 +42,7 @@ class OtrsImporter < Importer
     desc = "OTRS ticket \n"
     ticket[:customer_id].nil? ? desc += "\n \n" : desc += "Reporting Customer: #{ticket[:customer_id]} \n \n"
 
-    ticket_article(ticket[:id]).each do |ta|
+    ticket_articles(ticket[:id]).each do |ta|
       desc += "*#{ta[:create_time]}, #{ta[:a_from]}:* \n"
       desc += "<pre>#{ta[:a_body]}</pre>"
     end
@@ -64,9 +64,9 @@ class OtrsImporter < Importer
   end
 
   def fixed_version_id(ticket)
-    if otrs_ticket_status(ticket[:ticket_state_id]) == 'check efficacy'
+    if ticket_status_check_efficacy(ticket)
       843
-    elsif !article_check(ticket[:id]) && otrs_ticket_status(ticket[:ticket_state_id]) == 'closed successful'
+    elsif ticket_status_closed_successful(ticket)
       842
     end
   end
@@ -75,8 +75,16 @@ class OtrsImporter < Importer
   #
   # Helpermethods
   #
+  def ticket_status_check_efficacy(ticket)
+    otrs_ticket_status(ticket[:ticket_state_id]) == 'check efficacy'
+  end
+
+  def ticket_status_closed_successful(ticket)
+    !article_check(ticket[:id]) && otrs_ticket_status(ticket[:ticket_state_id]) == 'closed successful'
+  end
+
   def article_check(ticket_id)
-    article = ticket_article(ticket_id)
+    article = ticket_articles(ticket_id)
     article.find {|a| a[:a_subject] == 'Wirksamkeit geprüft'}.nil?
   end
 
@@ -127,7 +135,7 @@ class OtrsImporter < Importer
     puts 'Queue not found in database'
   end
 
-  def ticket_article(ticket_id)
+  def ticket_articles(ticket_id)
     otrs_db[:article].where(ticket_id: ticket_id)
   end
 

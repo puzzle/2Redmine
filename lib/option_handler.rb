@@ -23,19 +23,19 @@ module OptionHandler
       opt.separator  ''
       opt.separator  'Options'
 
-      opt.on('-so','--source source','which source you want paste in to redmine (required)') do |source|
+      opt.on('-rso','--redmine_source source','which source you want paste in to redmine (required)') do |source|
         options[:source] = source
       end
 
-      opt.on('-r','--redmine_projectid Projectid', 'which project you want paste in (required)') do |project_id|
+      opt.on('-rr','--redmine_projectid Projectid', 'which project you want paste in (required)') do |project_id|
         options[:project_id] = project_id
       end
 
-      opt.on('-a','--apikey Apikey', 'which apikey you want to use (required)') do |apikey|
+      opt.on('-ra','--redmine_apikey Apikey', 'which apikey you want to use (required)') do |apikey|
         options[:apikey] = apikey
       end
 
-      opt.on('-u','--url URL', 'which URL you want to use (required)') do |url|
+      opt.on('-ru','redmine_url URL', 'which URL you want to use (required)') do |url|
         options[:url] = url
       end
 
@@ -50,11 +50,11 @@ module OptionHandler
       #
       # Parameters for OTRS
       #
-      opt.on('-qu', '--otrs_query', 'otrs ticket title filter') do |query|
+      opt.on('--otrs_query', 'otrs ticket title filter') do |query|
         options[:query] = query
       end
 
-      opt.on('-q','--otrs_queue ', 'otrs queue name to import tickets from, e.g. --otrs-queue-name MyQueue') do |queue|
+      opt.on('--otrs_queue ', 'otrs queue name to import tickets from, e.g. --otrs-queue-name MyQueue') do |queue|
         options[:queue] = queue
       end
 
