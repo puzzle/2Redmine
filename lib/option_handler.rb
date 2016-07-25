@@ -23,38 +23,38 @@ module OptionHandler
       opt.separator  ''
       opt.separator  'Options'
 
-      opt.on('-rso','--redmine_source source','which source you want paste in to redmine (required)') do |source|
+      opt.on('-rso','--redmine-source source','which source you want paste in to redmine (required)') do |source|
         options[:source] = source
       end
 
-      opt.on('-rr','--redmine_projectid Projectid', 'which project you want paste in (required)') do |project_id|
-        options[:project_id] = project_id
+      opt.on('-rr','--redmine-projectid Projectid', 'which project you want paste in (required)') do |project-id|
+        options[:project-id] = project-id
       end
 
-      opt.on('-ra','--redmine_apikey Apikey', 'which apikey you want to use (required)') do |apikey|
+      opt.on('-ra','--redmine-apikey Apikey', 'which apikey you want to use (required)') do |apikey|
         options[:apikey] = apikey
       end
 
-      opt.on('-ru','redmine_url URL', 'which URL you want to use (required)') do |url|
+      opt.on('-ru','redmine-url URL', 'which URL you want to use (required)') do |url|
         options[:url] = url
       end
 
-      opt.on('-e','--source_tool Source_Tool', 'which source tool you want to use (required) | Options: bugzilla, OTR') do |source_tool|
-        options[:source_tool] = source_tool
+      opt.on('-e','--source-tool Source-Tool', 'which source tool you want to use (required) | Options: bugzilla, OTR') do |source-tool|
+        options[:source-tool] = source-tool
       end
 
-      opt.on('-s','--status_id Status_id', 'which status id you want to use (Default = 1)') do |status_id|
-        options[:status_id] = status_id
+      opt.on('-s','--status-id Status-id', 'which status id you want to use (Default = 1)') do |status-id|
+        options[:status-id] = status-id
       end
 
       #
       # Parameters for OTRS
       #
-      opt.on('--otrs_query', 'otrs ticket title filter') do |query|
+      opt.on('--otrs-query', 'otrs ticket title filter') do |query|
         options[:query] = query
       end
 
-      opt.on('--otrs_queue ', 'otrs queue name to import tickets from, e.g. --otrs-queue-name MyQueue') do |queue|
+      opt.on('--otrs-queue ', 'otrs queue name to import tickets from, e.g. --otrs-queue-name MyQueue') do |queue|
         options[:queue] = queue
       end
 
