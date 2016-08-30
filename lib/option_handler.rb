@@ -27,30 +27,30 @@ module OptionHandler
         options[:source] = source
       end
 
-      opt.on('-rr','--redmine-projectid Projectid', 'which project you want paste in (required)') do |project-id|
-        options[:project-id] = project-id
+      opt.on('-rr','--redmine-projectid Projectid', 'which project you want paste in (required)') do |project_id|
+        options[:project_id] = project_id
       end
 
       opt.on('-ra','--redmine-apikey Apikey', 'which apikey you want to use (required)') do |apikey|
         options[:apikey] = apikey
       end
 
-      opt.on('-ru','redmine-url URL', 'which URL you want to use (required)') do |url|
+      opt.on('-ru','--redmine-url URL', 'which URL you want to use (required)') do |url|
         options[:url] = url
       end
 
-      opt.on('-e','--source-tool Source-Tool', 'which source tool you want to use (required) | Options: bugzilla, OTR') do |source-tool|
-        options[:source-tool] = source-tool
+      opt.on('-e','--source-tool Source-Tool', 'which source tool you want to use (required) | Options: bugzilla, OTR') do |source_tool|
+        options[:source_tool] = source_tool
       end
 
-      opt.on('-s','--status-id Status-id', 'which status id you want to use (Default = 1)') do |status-id|
-        options[:status-id] = status-id
+      opt.on('-s','--status-id Status-id', 'which status id you want to use (Default = 1)') do |status_id|
+        options[:status_id] = status_id
       end
 
       #
       # Parameters for OTRS
       #
-      opt.on('--otrs-query', 'otrs ticket title filter') do |query|
+      opt.on('-oq','--otrs-query Otrs-Query', 'otrs ticket title filter') do |query|
         options[:query] = query
       end
 
