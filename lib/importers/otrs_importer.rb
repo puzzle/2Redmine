@@ -39,10 +39,10 @@ class OtrsImporter < Importer
   end
 
   def description(ticket)
-    desc = "OTRS ticket \n"
-    ticket[:customer_id].nil? ? desc += "\n \n" : desc += "Reporting Customer: #{ticket[:customer_id]} \n \n"
+    desc = "OTRS \n"
+    ticket[:customer_id].nil? ? desc += "\n \n" : desc += "Originally reported by: #{ticket[:customer_id]} \n \n"
 
-    ticket_articles(ticket[:id]).each do |ta|
+    ticket_articles(ticket[:id]).reverse_each do |ta|
       desc += "*#{ta[:create_time]}, #{ta[:a_from]}:* \n"
       desc += "<pre>#{ta[:a_body]}</pre>"
     end

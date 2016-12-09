@@ -17,7 +17,8 @@ class Exporter
   def export
     redmine_url = "https://#{@url.host}#{@url.path}"
       @issue.each do |i|
-        RestClient.post(redmine_url, i.to_json, content_type: :json, params: {key: @api_key})
+        client = RestClient::Resource.new(redmine_url, :verify_ssl => false)
+        client.post(i.to_json, content_type: :json, params: {key: @api_key})
         puts "exported issue: #{i.subject}"
       end
     rescue Exception
