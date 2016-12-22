@@ -36,7 +36,7 @@ class OtrsImporterTest < Minitest::Test
     assert_equal "666", redmine_issue.project_id
     assert_equal 2, redmine_issue.tracker_id
     assert_equal "test the test ticket for testing something for test reason", redmine_issue.subject
-    description = "OTRS ticket \nReporting Customer: test@test.ch \n \n*2012-01-06 10:30:02 +0100, Markus Tester <tester@test.ch>:* \n<pre>Dies ist der body eines article und zugleich auch ein Test</pre>"
+    description = "OTRS \nOriginally reported by: test@test.ch \n \n*2012-01-06 10:30:02 +0100, Markus Tester <tester@test.ch>:* \n<pre>Dies ist der body eines article und zugleich auch ein Test</pre>"
     assert_equal description, redmine_issue.description
     assert_equal "2012-01-06", redmine_issue.start_date
     assert_equal "2012-01-06", redmine_issue.created_on

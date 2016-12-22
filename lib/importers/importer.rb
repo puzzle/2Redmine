@@ -51,14 +51,5 @@ class Importer
     def import_source_entries
       raise 'implement me in subclass'
     end
-
-    def escape_tags(tag, file)
-      regex = /<#{tag}>(.*?)<\/#{tag}>/msu
-      file = File.read(file)
-      text = file.match(regex)[0]
-      replaced_text = text.gsub("<#{tag}>", '').gsub("</#{tag}>", '')
-      replaced_text = replaced_text.to_s.gsub('<', '&lt;').gsub('>', '&gt;')
-      file.gsub(regex, "<#{tag}>#{replaced_text}</#{tag}>")
-    end
   end
 end

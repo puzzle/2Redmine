@@ -24,11 +24,11 @@ class BugzillaImporterTest < Minitest::Test
 
     redmine_issues = Importer.redmine_issues(options)
 
-    redmine_issue = redmine_issues.first
+    redmine_issue = redmine_issues[0]
     assert_equal "183", redmine_issue.project_id
     assert_equal 2, redmine_issue.tracker_id
     assert_equal "#1 - Test eines Testes", redmine_issue.subject
-    description = "BugzillaBug for Test (Logik) 2: \nStatus: NEW / Priority: P1 / Severity: enhancement \n\n \n*2014-01-01 16:48:53 +0200, :* \n<pre>\n        <test>\n        Test Issue for Script\n      </pre>"
+    description = "BugzillaBug for Test (Logik) 2: \nStatus: NEW / Priority: P1 / Severity: enhancement \n\n \n*2014-01-01 16:48:53 +0200, :* \n<pre>\n        Test Issue for Script\n      </pre>"
     assert_equal description, redmine_issue.description
     assert_equal "2014-01-01", redmine_issue.start_date
     assert_equal "64.00", redmine_issue.estimated_hours
@@ -38,7 +38,9 @@ class BugzillaImporterTest < Minitest::Test
     assert_equal 1, redmine_issue.status_id
     assert_equal 4, redmine_issue.prioriry_id
     assert_equal false, redmine_issue.is_private
-
+    
+    second_bug_description = "BugzillaBug for Test (Logik) 2: \nStatus: NEW / Priority: P1 / Severity: enhancement \n\n \n*2014-01-01 16:48:53 +0200, :* \n<pre>\n        Second Test Issue for Script\n      </pre>"
+    assert_equal second_bug_description, redmine_issues[1].description
   end
 
   def test_abort_if_unknown_source_tool
@@ -60,13 +62,4 @@ class BugzillaImporterTest < Minitest::Test
 
     assert_equal "2014-01-01", date
   end
-
-  def test_if_format_tag_is_correct
-    thetext = "\n        <test>\n        Test Issue for Script\n      "
-    file = Importer.escape_tags('thetext', 'test/test_file.xml')
-    xmlfile = XmlSimple.xml_in(file)
-
-    assert_equal thetext, xmlfile['bug'][0]['long_desc'][0]['thetext'][0]
-  end
-
 end
