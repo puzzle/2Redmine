@@ -39,7 +39,7 @@ module OptionHandler
         options[:url] = url
       end
 
-      opt.on('-e','--source-tool Source-Tool', 'which source tool you want to use (required) | Options: bugzilla, OTR') do |source_tool|
+      opt.on('-e','--source-tool Source-Tool', 'which source tool you want to use (required) | Options: bugzilla, OTRS') do |source_tool|
         options[:source_tool] = source_tool
       end
 
