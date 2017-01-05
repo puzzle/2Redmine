@@ -2,9 +2,9 @@
 
 This README explains how to use 2Redmine. 
 
-Here you will find a short introduction about it.
+Here you will find a short introduction to it.
 
-2Redmine is a Script to Import Bugs/Tickets from an tool into Redmine.
+2Redmine is a Script to Import Bugs/Tickets from a tool into Redmine.
 
 ## Prerequisites
 
@@ -58,7 +58,7 @@ sudo apt-get install ruby2.3
 
 ### Bundler
 
-Bundler provides a environment for Ruby projects by tracking and installing the gems and versions that are needed.
+Bundler provides an environment for Ruby projects by tracking and installing the gems and versions that are needed.
 
 ### How to install Bundler on Linux
 
