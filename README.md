@@ -12,6 +12,8 @@ If you want to use 2Redmine, you need the following things:
 
 -Git
 
+-Ruby
+
 -Bundler
 
 ## Installation
@@ -30,6 +32,28 @@ or
 
 ```
 $ sudo apt-get install git-all
+```
+
+### Ruby
+
+Ruby is an object-oriented programming language
+
+### How to install Ruby on Linux
+
+```
+$ sudo yum install ruby
+```
+
+or
+
+```
+$ sudo apt-get install ruby
+```
+
+You need a current version. To update ruby, enter the following command:
+
+```
+sudo apt-get install ruby2.3
 ```
 
 ### Bundler
@@ -73,10 +97,6 @@ Execute bundle install:
 $ bundle install
 ```
 
-## What is Bugzilla?
-
-Bugzilla importer imports the bugs from a xml file. Export the xml file manual from bugzilla. 
-
 ## How to import Bugs/Tickets into Redmine
 
 Change into your 2Redmine directory:
@@ -117,26 +137,14 @@ $ ./2redmine
 
 Example:
 
+Bugzilla importer imports the bugs from a xml file. Export the xml file manual from bugzilla. 
+
 ```
  ./2redmine --redmine-source ../../example_file --redmine-projectid 12121212 --redmine-apikey 3ithrfj4uihguh --redmine-url https://redmine.example.ch --source-tool bugzilla --status-id 2
 ```
-
-| Params | Description           |
-| ------------------------------- |:-------------:|
-| --redmine-source     | Path to the File you wish to import |
-| --redmine-projectid     | The redmine project id you wish your issues to import in      |
-| --redmine-apikey | The API key to access to your redmine (MyAccount -> on the right side)      |
-| --redmine-url | URL to the Redmine  |
-| --source-tool | which source tool you want to use (required) | Options: bugzilla, OTR |
-| --status-id | The status-id you want to set to this file export (by default is set 1)|
-
-
-##OTRS
+or
 
 OTRS importer imports ticket from the OTRS database. You need a database user with at least read permisson.
-
-
-Example:
 
 ```
  ./2redmine --redmine-source ../../example_file --redmine-projectid 12121212 --redmine-apikey 3ithrfj4uihguh --redmine-url https://redmine.example.ch --source-tool otrs --status-id 2 --otrs-query p25 --otrs-queue MyQueue
@@ -148,11 +156,10 @@ Example:
 | --redmine-projectid     | The redmine project id you wish your issues to import in      |
 | --redmine-apikey | The API key to access to your redmine (MyAccount -> on the right side)      |
 | --redmine-url | URL to the Redmine  |
-| --source-tool | which source tool you want to use (required) | Options: bugzilla, OTR |
+| --source-tool | which source tool you want to use (required) | Options: bugzilla, OTRS |
 | --status-id | The status-id you want to set to this file export (by default is set 1)|
 | --otrs-query | otrs ticket title filter|
 | --otrs-queue | otrs queue name to import tickets from, e.g. --otrs-queue-name MyQueue|
-
 
 
 ## Database credentials for OTRS
