@@ -1,36 +1,124 @@
-# 2Redmine
+# 2Redmine Readme
 
-This README outlines the details of collaborating on this script. A short introduction of this script could easily go here.
+This README explains how to use 2Redmine. 
+
+Here you will find a short introduction about it.
 
 2Redmine is a Script to Import Bugs/Tickets from an tool into Redmine.
 
 ## Prerequisites
 
-You will need the following things properly installed on your computer.
+If you want to use 2Redmine, you need the following things:
 
-Git
+-Git
 
-Bundle
+-Bundler
 
 ## Installation
 
-git clone <repository-url> this repository
+### Git
 
-change into the new directory
+Git is a free software for distributed version management of files initiated by Linus Torvalds.
 
-execute "bundle install"
+### How to install Git on Linux
 
+```
+$ sudo yum install git-all
+```
 
-## Bugzilla
+or
+
+```
+$ sudo apt-get install git-all
+```
+
+### Bundler
+
+Bundler provides a environment for Ruby projects by tracking and installing the gems and versions that are needed.
+
+### How to install Bundler on Linux
+
+```
+$ gem install bundler
+```
+
+### How to clone 2Redmine repository 
+
+Clone 2Redmine repository in your current directory:
+
+```
+$ git clone repository-url
+```
+Example:
+
+```
+$ git clone https://github.com/example/2Redmine.git
+```
+
+Change into the new directory:
+
+```
+$ cd new directory name
+```
+
+Example:
+
+```
+$ cd 2Redmine/
+```
+
+Execute bundle install:
+
+```
+$ bundle install
+```
+
+## What is Bugzilla?
 
 Bugzilla importer imports the bugs from a xml file. Export the xml file manual from bugzilla. 
+
+## How to import Bugs/Tickets into Redmine
+
+Change into your 2Redmine directory:
+
+```
+$ cd directory name
+```
+
+Example:
+
+```
+$ cd 2Redmine/
+```
+
+Enter the following command with its parameters:
+
+```
+$ ./2redmine 
+--redmine-source ../../example_file
+--redmine-projectid projectid
+--redmine-apikey apikey
+--redmine-url https://redmine-url/projects/project
+--source-tool source-tool
+```
+
+Example:
+
+```
+$ ./2redmine 
+--redmine-source /home/mmustermann/Desktop/bugzilla_bugs.xml
+--redmine-projectid 1
+--redmine-apikey 143b50e261187g461h1677bd4afdd260fc98tf9j
+--redmine-url https://redmine-test.example.ch/projects/test
+--source-tool bugzilla
+```
 
 ### Running / Params
 
 Example:
 
 ```
- ./2redmine --source ../../example_file --redmine-projectid 12121212 --redmine-apikey 3ithrfj4uihguh --url https://redmine.example.ch --source-tool bugzilla --status-id 2
+ ./2redmine --redmine-source ../../example_file --redmine-projectid 12121212 --redmine-apikey 3ithrfj4uihguh --redmine-url https://redmine.example.ch --source-tool bugzilla --status-id 2
 ```
 
 | Params | Description           |
@@ -45,13 +133,13 @@ Example:
 
 ##OTRS
 
-Otrs importer imports ticket from the otrs database. You need a database user with at least read permisson.
+OTRS importer imports ticket from the OTRS database. You need a database user with at least read permisson.
 
 
 Example:
 
 ```
- ./2redmine --source ../../example_file --redmine-projectid 12121212 --redmine-apikey 3ithrfj4uihguh --url https://redmine.example.ch --source-tool otrs --status-id 2 --otrs-query p25 --otrs-queue MyQueue
+ ./2redmine --redmine-source ../../example_file --redmine-projectid 12121212 --redmine-apikey 3ithrfj4uihguh --redmine-url https://redmine.example.ch --source-tool otrs --status-id 2 --otrs-query p25 --otrs-queue MyQueue
 ```
 
 | Params | Description           |
@@ -70,5 +158,5 @@ Example:
 ## Database credentials for OTRS
 
 In the root directory is a file called: db_credentials.yml
-Write your username, password,hostadress, and database name to this file.
+Write your username, password, hostadress and database name to this file.
 
