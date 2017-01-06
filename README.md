@@ -63,7 +63,7 @@ Bundler provides an environment for Ruby projects by tracking and installing the
 ### How to install Bundler on Linux
 
 ```
-$ gem install bundler
+$ sudo gem install bundler
 ```
 
 ### How to clone 2Redmine repository 
@@ -95,6 +95,20 @@ Execute bundle install:
 
 ```
 $ bundle install
+```
+
+If am error occurs, enter the following commands:
+
+```
+$ sudo apt-get install ruby-dev
+```
+
+```
+$ sudo apt-get install libmysqlcient-dev
+```
+
+```
+$ sudo gem install mysql
 ```
 
 ## How to import Bugs/Tickets into Redmine
