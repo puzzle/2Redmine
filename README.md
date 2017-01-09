@@ -147,6 +147,16 @@ $ ./2redmine
 --source-tool bugzilla
 ```
 
+How do I get the ProjectId?
+
+Go on the redmine to the projects
+
+Type in the url .xml
+
+Example: https://redmine.example.com/projects.xml
+
+You have to enter your password and then you see the project id.
+
 ### Running / Params
 
 Example:
@@ -175,9 +185,17 @@ OTRS importer imports ticket from the OTRS database. You need a database user wi
 | --otrs-query | otrs ticket title filter|
 | --otrs-queue | otrs queue name to import tickets from, e.g. --otrs-queue-name MyQueue|
 
+How do I get the StatusId?
+
+Go on the redmine to the issues
+
+Type in the url .xml
+
+Example: https://redmine.example.com/issues.xml
+
+You have to enter your password an then you see the status id.
 
 ## Database credentials for OTRS
 
 In the root directory is a file called: db_credentials.yml
 Write your username, password, hostadress and database name to this file.
-
