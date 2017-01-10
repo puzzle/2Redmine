@@ -91,7 +91,7 @@ Execute bundle install:
 $ bundle install
 ```
 
-If am error occurs, enter the following commands:
+If an error occurs, enter the following commands:
 
 ```
 $ sudo apt-get install ruby-dev
