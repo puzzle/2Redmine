@@ -50,12 +50,6 @@ or
 $ sudo apt-get install ruby
 ```
 
-You need a current version. To update ruby, enter the following command:
-
-```
-sudo apt-get install ruby2.3
-```
-
 ### Bundler
 
 Bundler provides an environment for Ruby projects by tracking and installing the gems and versions that are needed.
@@ -63,7 +57,7 @@ Bundler provides an environment for Ruby projects by tracking and installing the
 ### How to install Bundler on Linux
 
 ```
-$ sudo gem install bundler
+$ gem install bundler
 ```
 
 ### How to clone 2Redmine repository 
@@ -175,13 +169,11 @@ OTRS importer imports ticket from the OTRS database. You need a database user wi
 | --otrs-query | otrs ticket title filter|
 | --otrs-queue | otrs queue name to import tickets from, e.g. --otrs-queue-name MyQueue|
 
-### How do I get the StatusId, ProjectId or Issue StatusId
+### How do I get the StatusId or ProjectId?
 
 Go on the redmine
 
-Type in the url 
-
-- issues.xml
+Type in the url: 
 
 - projects.xml
 
@@ -189,11 +181,9 @@ Type in the url
 
 Examples:
 
-StatusId: https://redmine.example.com/issues.xml
-
 ProjectId: https://redmine.example.com/ptojects.xml
 
-Issue StatusId: https://redmine.example.com/issue_statuses.xml
+StatusId: https://redmine.example.com/issue_statuses.xml
 
 You have to enter your password an then you see the xml file with the id's.
 
