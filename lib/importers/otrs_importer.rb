@@ -111,7 +111,7 @@ class OtrsImporter < Importer
   end
 
   def db_credentials
-    credentials = YAML.load(File.read('db_credentials.yml'))
+    YAML.load(File.read('db_credentials.yml'))
   end
 
   #

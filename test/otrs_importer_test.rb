@@ -69,7 +69,7 @@ class OtrsImporterTest < Minitest::Test
   private
 
   def ticket
-    ticket =  [{  id: 2462,
+    [{  id: 2462,
                  tn: "0313524598",
                  title: "test the test ticket for testing something for test reason",
                  queue_id: 43,
@@ -99,7 +99,7 @@ class OtrsImporterTest < Minitest::Test
 
 
   def article
-    article =   [{create_time: "2012-01-06 10:30:02 +0100",
+    [{create_time: "2012-01-06 10:30:02 +0100",
                  a_from: "Markus Tester <tester@test.ch>",
                  a_body: "Dies ist der body eines article und zugleich auch ein Test"}]
   end

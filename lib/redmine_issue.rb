@@ -8,7 +8,7 @@
 class RedmineIssue
   ATTRS = [:project_id, :tracker_id, :status_id, :prioriry_id, :prioriry_name, :subject, :description, :start_date, :is_private, :estimated_hours, :created_on, :updated_on, :story_points, :fixed_version_id ]
 
-  attr_accessor *ATTRS
+  attr_accessor(*ATTRS)
 
   def initialize(params = {})
     params.each do |key, value|
