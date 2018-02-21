@@ -102,7 +102,7 @@ $ sudo apt-get install libmysqlcient-dev
 ```
 
 ```
-$ sudo gem install mysql
+$ sudo gem install mysql2
 ```
 
 ## How to import Bugs/Tickets into Redmine
@@ -155,7 +155,7 @@ or
 OTRS importer imports ticket from the OTRS database. You need a database user with at least read permisson.
 
 ```
- ./2redmine --redmine-source ../../example_file --redmine-projectid 12121212 --redmine-apikey 3ithrfj4uihguh --redmine-url https://redmine.example.ch --source-tool otrs --status-id 2 --otrs-query p25 --otrs-queue MyQueue
+ ./2redmine --redmine-projectid 12121212 --redmine-apikey 3ithrfj4uihguh --redmine-url https://redmine.example.ch --source-tool otrs --status-id 2 --otrs-query p25 --otrs-queue MyQueue
 ```
 
 | Params | Description           |

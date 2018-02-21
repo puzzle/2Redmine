@@ -41,12 +41,29 @@ class OtrsImporterTest < Minitest::Test
     assert_equal "2012-01-06", redmine_issue.start_date
     assert_equal "2012-01-06", redmine_issue.created_on
     assert_equal "2012-03-28", redmine_issue.updated_on
-    assert_equal nil, redmine_issue.story_points
+    assert_nil redmine_issue.story_points
     assert_equal 1, redmine_issue.status_id
     assert_equal 4, redmine_issue.prioriry_id
     assert_equal false, redmine_issue.is_private
   end
 
+  def test_otrs_queue_not_found
+    options = {
+      project_id: '666',
+      source_tool: 'otrs',
+      queue: 'batzelhanft'
+    }
+
+    otrs_importer = OtrsImporter.new(options)
+    otrs_importer.expects(:tickets).returns(ticket)
+    Importer.expects(:initialize_importer).with(options).returns(otrs_importer)
+
+    e = assert_raises(RuntimeError) do
+      Importer.redmine_issues(options)
+    end
+    
+    assert_match(/Queue batzelhanft not found/, e.message)
+  end
 
 
   private
@@ -55,7 +72,7 @@ class OtrsImporterTest < Minitest::Test
     ticket =  [{  id: 2462,
                  tn: "0313524598",
                  title: "test the test ticket for testing something for test reason",
-                 queue_id: 40,
+                 queue_id: 43,
                  ticket_lock_id: 1,
                  type_id: 1,
                  service_id: nil,
