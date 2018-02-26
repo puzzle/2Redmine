@@ -130,8 +130,14 @@ class OtrsImporter < Importer
   end
 
   def queue_tickets
-    tickets.where(queue_id: queue_id.first[:id].to_s)
-  rescue NoMethodError
+    if queue_id.first
+      tickets.where(queue_id: queue_id.first[:id].to_s)
+    else
+      raise_queue_not_found_error
+    end
+  end
+
+  def raise_queue_not_found_error
     raise 'Queue ' + @params[:queue] + ' not found in database'
   end
 

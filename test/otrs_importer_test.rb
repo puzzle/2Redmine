@@ -55,8 +55,8 @@ class OtrsImporterTest < Minitest::Test
     }
 
     otrs_importer = OtrsImporter.new(options)
-    otrs_importer.expects(:tickets).returns(ticket)
     Importer.expects(:initialize_importer).with(options).returns(otrs_importer)
+    
 
     e = assert_raises(RuntimeError) do
       Importer.redmine_issues(options)
