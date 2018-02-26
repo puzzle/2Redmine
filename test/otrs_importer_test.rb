@@ -56,15 +56,15 @@ class OtrsImporterTest < Minitest::Test
 
     otrs_importer = OtrsImporter.new(options)
     Importer.expects(:initialize_importer).with(options).returns(otrs_importer)
-    
 
+    OtrsImporter.any_instance.expects(:queue_id).returns([nil])
+    
     e = assert_raises(RuntimeError) do
       Importer.redmine_issues(options)
     end
     
     assert_match(/Queue batzelhanft not found/, e.message)
   end
-
 
   private
 
@@ -96,7 +96,6 @@ class OtrsImporterTest < Minitest::Test
                  change_by: 37,
                  archive_flag: 0}]
   end
-
 
   def article
     [{create_time: "2012-01-06 10:30:02 +0100",
